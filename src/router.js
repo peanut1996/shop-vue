@@ -7,9 +7,19 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
-    { path: '/', component: Login },
-    { path: '/index', component: Index }
+    { path: '/', component: Index, name: 'index' },
+    { path: '/login', component: Login, name: 'login' }
   ]
+})
+
+// 设置导航守卫
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token')
+  if (to.path === '/login' || token) {
+    next()
+  } else {
+    next('/login')
+  }
 })
 
 export default router
