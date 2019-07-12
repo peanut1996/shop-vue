@@ -17,8 +17,6 @@
 </template>
 
 <script>
-// 导入axios插件
-import axios from 'axios'
 
 export default {
   data () {
@@ -44,9 +42,9 @@ export default {
       this.$refs.form.validate(valid => {
         if (!valid) return false
         // 校验成功发送ajax
-        axios.post('http://localhost:8888/api/private/v1/login', this.form).then(res => {
+        this.axios.post('login', this.form).then(res => {
           // 解构
-          const { meta: { status, msg }, data: { token } } = res.data
+          const { meta: { status, msg }, data: { token } } = res
           if (status === 200) {
             this.$message({
               message: '登录成功',

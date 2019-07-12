@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data () {
     return {
@@ -83,16 +82,14 @@ export default {
   },
   methods: {
     getUserList () {
-      axios.get('http://localhost:8888/api/private/v1/users', {
+      this.axios.get('users', {
         params: {
           query: this.query,
           pagenum: this.pagenum,
           pagesize: this.pagesize
-        },
-        // 请求头
-        headers: { Authorization: localStorage.getItem('token') }
+        }
       }).then(res => {
-        const { meta, data } = res.data
+        const { meta, data } = res
         if (meta.status === 200) {
           this.tableData = data.users
           this.total = data.total
@@ -121,12 +118,8 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.delete(`http://localhost:8888/api/private/v1/users/${id}`, {
-          headers: {
-            Authorization: localStorage.getItem('token')
-          }
-        }).then(res => {
-          if (res.data.meta.status === 200) {
+        this.axios.delete(`users/${id}`).then(res => {
+          if (res.meta.status === 200) {
             this.$message({
               type: 'success',
               message: '删除成功!'
