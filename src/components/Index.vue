@@ -13,19 +13,21 @@
     <el-container>
       <el-aside width="200px">
         <el-menu
+          default-active="users"
           unique-opened
           class="el-menu-vertical-demo"
           @open="handleOpen"
           @close="handleClose"
           background-color="#545c64"
           text-color="#fff"
+          router
           active-text-color="#ffd04b">
           <el-submenu index="1">
             <template v-slot:title>
               <i class="el-icon-location"></i>
               <span>用户管理</span>
             </template>
-            <el-menu-item index="1-1">
+            <el-menu-item index="users">
               <i class="el-icon-menu"></i>
               <span slot="title">用户列表</span>
             </el-menu-item>
@@ -46,7 +48,9 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -93,6 +97,9 @@ export default {
     .logo,
     .loginout{
       width: 180px;
+    }
+    h1{
+      color: #fff
     }
     .logo{
       background: url('../assets/logo.png') no-repeat center center/contain;
