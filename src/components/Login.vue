@@ -6,7 +6,7 @@
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="form.password" type="password"></el-input>
+        <el-input v-model="form.password" type="password" @keydown.enter.native="login"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="login">登录</el-button>
@@ -38,32 +38,33 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.$refs.form.validate(valid => {
-        if (!valid) return false
+    async login () {
+      try {
+        await this.$refs.form.validate()
         // 校验成功发送ajax
-        this.axios.post('login', this.form).then(res => {
-          // 解构
-          const { meta: { status, msg }, data: { token } } = res
-          if (status === 200) {
-            this.$message({
-              message: '登录成功',
-              type: 'success',
-              center: true
-            })
-            // 存储token
-            localStorage.setItem('token', token)
+        const res = await this.axios.post('login', this.form)
+        // 解构
+        const { meta: { status, msg }, data: { token } } = res
+        if (status === 200) {
+          this.$message({
+            message: '登录成功',
+            type: 'success',
+            center: true
+          })
+          // 存储token
+          localStorage.setItem('token', token)
 
-            this.$router.push({ name: 'index' })
-          } else {
-            this.$message({
-              message: '登录失败,' + msg,
-              type: 'error',
-              center: true
-            })
-          }
-        })
-      })
+          this.$router.push({ name: 'index' })
+        } else {
+          this.$message({
+            message: '登录失败,' + msg,
+            type: 'error',
+            center: true
+          })
+        }
+      } catch (e) {
+        return false
+      }
     },
     resetForm () {
       this.$refs.form.resetFields()
@@ -76,7 +77,6 @@ export default {
 .login{
   width: 100%;
   height: 100%;
-  background-color: #2d434c;
   overflow: hidden;
   background-image: url(../assets/bg.jpg);
   background-repeat: no-repeat;
