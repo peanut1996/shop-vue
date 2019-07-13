@@ -42,7 +42,7 @@ export default {
       try {
         await this.$refs.form.validate()
         // 校验成功发送ajax
-        const res = await this.axios.post('login', this.form)
+        const res = await this.axios.post('http://localhost:8888/api/private/v1/login', this.form)
         // 解构
         const { meta: { status, msg }, data: { token } } = res
         if (status === 200) {
@@ -77,6 +77,7 @@ export default {
 .login{
   width: 100%;
   height: 100%;
+  background-color: #2d434c;
   overflow: hidden;
   background-image: url(../assets/bg.jpg);
   background-repeat: no-repeat;
