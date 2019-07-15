@@ -274,12 +274,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-breadcrumb{
-  margin-bottom: 10px;
-  padding-left: 20px;
-  height: 50px;
-  line-height: 50px;
-  background-color: #d4dae0;
-}
 
 </style>
