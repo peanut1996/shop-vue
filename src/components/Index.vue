@@ -13,37 +13,20 @@
     <el-container>
       <el-aside width="200px">
         <el-menu
-          default-active="users"
+          :default-active="$route.path.slice(1)"
           unique-opened
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
           background-color="#545c64"
           text-color="#fff"
           router
           active-text-color="#ffd04b">
-          <el-submenu index="1">
+          <el-submenu v-for='menu in menulist' :key='menu.id' :index="menu.path">
             <template v-slot:title>
               <i class="el-icon-location"></i>
-              <span>用户管理</span>
+              <span>{{menu.authName}}</span>
             </template>
-            <el-menu-item index="users">
+            <el-menu-item v-for='item in menu.children' :key='item.id' :index="item.path">
               <i class="el-icon-menu"></i>
-              <span slot="title">用户列表</span>
-            </el-menu-item>
-          </el-submenu>
-          <el-submenu index="2">
-            <template v-slot:title>
-              <i class="el-icon-location"></i>
-              <span>权限管理</span>
-            </template>
-            <el-menu-item index="roles">
-              <i class="el-icon-menu"></i>
-              <span slot="title">角色列表</span>
-            </el-menu-item>
-            <el-menu-item index="rights">
-              <i class="el-icon-menu"></i>
-              <span slot="title">权限列表</span>
+              <span slot="title">{{item.authName}}</span>
             </el-menu-item>
           </el-submenu>
         </el-menu>
@@ -57,6 +40,17 @@
 
 <script>
 export default {
+  async created () {
+    const res = await this.axios.get('menus')
+    if (res.meta.status === 200) {
+      this.menulist = res.data
+    }
+  },
+  data () {
+    return {
+      menulist: []
+    }
+  },
   methods: {
     // 退出登录功能
     loginout () {
