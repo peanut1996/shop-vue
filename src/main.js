@@ -4,12 +4,18 @@ import router from './router'
 import axios from 'axios'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 // 引入nprogress
 import NProgress from 'nprogress' // 进度条
 import 'nprogress/nprogress.css' // 这个样式必须引入
+import moment from 'moment'
+import VueQuillEditor from 'vue-quill-editor'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(VueQuillEditor)
 
 NProgress.inc(0.2)
 NProgress.configure({ easing: 'ease', speed: 500, showSpinner: false })
@@ -42,6 +48,11 @@ axios.interceptors.response.use(function (response) {
 }, function (error) {
   // 对响应错误做点什么
   return Promise.reject(error)
+})
+
+// 定义一个全局的时间过滤器
+Vue.filter('dateFilter', function (value) {
+  return moment(value * 1000).format('YYYY-MM-DD HH:mm:ss')
 })
 
 new Vue({
